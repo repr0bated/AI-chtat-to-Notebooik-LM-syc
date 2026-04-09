@@ -17,13 +17,15 @@ export class SyncEngine {
     const accepted = records.filter((r) => this.deduper.accept(r));
     await this.limiter.waitTurn();
     const result = await this.queue.enqueue(() => this.adapter.uploadBatch(this.config.notebookId, accepted, this.config.dryRun));
-    this.state.checkpoints[batchId] = {
-      id: batchId,
-      from: accepted[0]?.monthBucket ?? this.config.startDate,
-      to: accepted[accepted.length - 1]?.monthBucket ?? this.config.endDate ?? this.config.startDate,
-      status: 'completed',
-      updatedAt: new Date().toISOString()
-    };
+    if (accepted.length > 0) {
+      this.state.checkpoints[batchId] = {
+        id: batchId,
+        from: accepted[0]?.monthBucket ?? this.config.startDate,
+        to: accepted[accepted.length - 1]?.monthBucket ?? this.config.endDate ?? this.config.startDate,
+        status: 'completed',
+        updatedAt: new Date().toISOString()
+      };
+    }
     this.state.lastSyncAt = new Date().toISOString();
     return { accepted: accepted.length, uploaded: result.uploaded };
   }

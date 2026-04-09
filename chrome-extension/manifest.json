@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "AI Chat to NotebookLM Sync",
+  "version": "1.0.0",
+  "description": "Continuous sync from ChatGPT, Claude, and Gemini to NotebookLM.",
+  "permissions": ["storage", "alarms", "scripting", "tabs", "downloads"],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*",
+    "https://notebooklm.google.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  "options_page": "src/options/options.html",
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*"],
+      "js": ["src/content/chatgpt.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["src/content/claude.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://gemini.google.com/*"],
+      "js": ["src/content/gemini.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "AI Sync"
+  }
+}

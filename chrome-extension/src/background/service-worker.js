@@ -30,7 +30,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 async function ingestConversation(payload) {
   const config = await getConfig();
-  limiter = new RateLimiter(config.rateLimitPerMinute || 20);
+  limiter.maxPerMinute = config.rateLimitPerMinute || 20;
   const state = await getState();
 
   if (!config.includePlatforms[payload.platform]) return;

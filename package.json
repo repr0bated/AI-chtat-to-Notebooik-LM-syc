@@ -1,0 +1,15 @@
+{
+  "name": "ai-chat-to-notebooklm-sync",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "shared",
+    "playwright-backfill"
+  ],
+  "scripts": {
+    "build": "npm run -w shared build && npm run -w playwright-backfill build",
+    "test": "npm run -w shared test",
+    "lint": "npm run -w shared lint && npm run -w playwright-backfill lint"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+shared/dist/
+playwright-backfill/dist/
+staging/
+playwright-backfill.checkpoint.json
+playwright/.auth/
+.DS_Store

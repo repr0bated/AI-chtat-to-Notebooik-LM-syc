@@ -44,10 +44,13 @@ async function ingestConversation(payload) {
   await queue.enqueue(async () => {
     const batch = [{ ...payload, dedupeHash: hash, syncTimestamp: new Date().toISOString(), monthBucket: payload.date?.slice(0, 7) || new Date().toISOString().slice(0, 7) }];
     const res = await uploadToNotebookLM(config, batch, false);
-    state.uploadedHashes = state.uploadedHashes || {};
-    state.uploadedHashes[hash] = true;
-    state.lastSyncAt = new Date().toISOString();
-    await saveState(state);
+    const freshState = await getState();
+    freshState.uploadedHashes = freshState.uploadedHashes || {};
+    freshState.uploadedHashes[hash] = true;
+    freshState.lastSyncAt = new Date().toISOString();
+    await saveState(freshState);
+    await appendLog({ level: 'info', event: 'sync.uploaded', platform: payload.platform, uploaded: res.uploaded });
+  });
     await appendLog({ level: 'info', event: 'sync.uploaded', platform: payload.platform, uploaded: res.uploaded });
   });
 }

@@ -1,0 +1,22 @@
+{
+  "name": "@sync/playwright-backfill",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "start": "node dist/index.js",
+    "backfill": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.52.0",
+    "@sync/shared": "1.0.0",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "@types/node": "^22.15.3"
+  }
+}
